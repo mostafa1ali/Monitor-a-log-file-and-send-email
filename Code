@@ -1,0 +1,14 @@
+#!/bin/bash
+
+string="${1:-error}"  
+delay="${2:-5}"     
+log="${3:-/var/log/kern.log}"
+echo "Scanning for '$string' in $log for $delay seconds"
+while sleep $delay
+do if nice -20 grep -iq "$string" $log
+   then grep -in "$string" $log | mail -s "$string in $log on $HOSTNAME" mostafa.reda.ali.8@gmail.com
+        echo "Found - mail sent $(date)"
+        exit 1
+   else date
+   fi
+done
